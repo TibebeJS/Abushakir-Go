@@ -1,0 +1,15 @@
+on: [push, pull_request]
+name: godev
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+      - name: Publish doc to go.dev packages
+        run: |
+          git pull
+          export latest="$(git describe --tags `git rev-list --tags --max-count=1`)"
+          curl https://proxy.golang.org/github.com/tibebejs/abushakir-go/@v/$latest.info
+          
